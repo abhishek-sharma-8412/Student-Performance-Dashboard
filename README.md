@@ -1,36 +1,142 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Student Performance Dashboard
+
+An extraordinary Next.js application with a modern UI/UX dashboard for predicting student assessment scores using Machine Learning.
+
+## Features
+
+- **Dynamic File Upload**: Drag-and-drop CSV file upload with validation
+- **Machine Learning Pipeline**: XGBoost with RandomizedSearchCV hyperparameter tuning
+- **Interactive Dashboard**: Beautiful metrics cards, charts, and data visualization
+- **Dark/Light Mode**: Toggle between themes for better usability
+- **Real-time Processing**: Live progress tracking during ML processing
+- **Export Functionality**: Download predictions as CSV
+
+## Tech Stack
+
+- **Frontend**: Next.js 14, TypeScript, TailwindCSS, Framer Motion, Recharts
+- **Backend**: Python, Pandas, NumPy, Scikit-learn, XGBoost
+- **UI Components**: shadcn/ui, Radix UI primitives
 
 ## Getting Started
 
-First, run the development server:
+### Prerequisites
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+- Node.js 18+ 
+- Python 3.8+
+- npm or yarn
+
+### Installation
+
+1. **Install Node.js dependencies:**
+   ```bash
+   npm install
+   ```
+
+2. **Install Python dependencies:**
+   ```bash
+   pip install -r requirements.txt
+   ```
+
+3. **Run the development server:**
+   ```bash
+   npm run dev
+   ```
+
+4. **Open your browser:**
+   Navigate to [http://localhost:3000](http://localhost:3000)
+
+## Usage
+
+1. **Upload Dataset**: Drag and drop a CSV file containing student data
+2. **Wait for Processing**: The ML pipeline will run automatically
+3. **View Results**: Explore metrics, charts, and feature importance
+4. **Download Predictions**: Export the results with predicted scores
+
+## Dataset Format
+
+Your CSV file should contain the following columns:
+- `comprehension`: Student comprehension score (0-100)
+- `attention`: Student attention score (0-100) 
+- `focus`: Student focus score (0-100)
+- `retention`: Student retention score (0-100)
+- `engagement_time`: Time spent engaged (minutes)
+- `assessment_score`: Target assessment score (0-100)
+
+## Sample Data
+
+A sample dataset (`sample_student_data.csv`) is included for testing.
+
+## Features Overview
+
+### Dashboard Sections
+
+1. **Data Overview**: Dataset summary with row/column counts and sample preview
+2. **Model Performance**: R², MAE, MSE, RMSE metrics with stylish cards
+3. **Cross-validation Results**: Mean ± std R² scores across 5 folds
+4. **Feature Importance**: Interactive bar chart showing feature contributions
+5. **Predicted vs Actual**: Scatter plot showing prediction accuracy
+
+### Machine Learning Pipeline
+
+- **Feature Engineering**: Creates derived features (mean_cognitive, attention_focus, etc.)
+- **Hyperparameter Tuning**: RandomizedSearchCV with 30 iterations
+- **Cross-validation**: 5-fold CV for robust performance estimation
+- **Scaling**: StandardScaler for feature normalization
+
+## Project Structure
+
+```
+student-performance-dashboard/
+├── src/
+│   ├── app/
+│   │   ├── api/process-ml/     # ML processing API
+│   │   ├── globals.css         # Global styles
+│   │   ├── layout.tsx          # Root layout
+│   │   └── page.tsx            # Main page
+│   ├── components/
+│   │   ├── ui/                 # Reusable UI components
+│   │   ├── Dashboard.tsx       # Main dashboard
+│   │   ├── FileUpload.tsx      # File upload component
+│   │   ├── MetricsCards.tsx    # Performance metrics
+│   │   ├── DataOverview.tsx    # Dataset overview
+│   │   ├── FeatureImportanceChart.tsx
+│   │   ├── PredictedVsActualChart.tsx
+│   │   ├── ThemeProvider.tsx   # Theme context
+│   │   └── ThemeToggle.tsx     # Dark/light toggle
+│   └── lib/
+│       └── utils.ts            # Utility functions
+├── ml_model.py                 # Python ML script
+├── requirements.txt            # Python dependencies
+└── sample_student_data.csv     # Sample dataset
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Development
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### Adding New Features
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+1. Create components in `src/components/`
+2. Add API routes in `src/app/api/`
+3. Update types and interfaces as needed
+4. Test with sample data
 
-## Learn More
+### Styling
 
-To learn more about Next.js, take a look at the following resources:
+- Uses TailwindCSS with custom design system
+- Dark mode support via CSS variables
+- Responsive design for all screen sizes
+- Framer Motion for smooth animations
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## License
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+MIT License - feel free to use this project for educational or commercial purposes.
 
-## Deploy on Vercel
+## Contributing
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+1. Fork the repository
+2. Create a feature branch
+3. Make your changes
+4. Submit a pull request
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Support
+
+For issues or questions, please open an issue on GitHub.
