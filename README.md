@@ -1,5 +1,9 @@
 # Student Performance Dashboard
 
+> 🚀 Live Demo: [student-performance-dashboard-xl8l.vercel.app](https://student-performance-dashboard-xl8l.vercel.app/)
+
+For the latest deployed version, visit the link above. This is the production deployment on Vercel.
+
 An extraordinary Next.js application with a modern UI/UX dashboard for predicting student assessment scores using Machine Learning.
 
 ## Features
