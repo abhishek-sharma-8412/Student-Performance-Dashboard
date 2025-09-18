@@ -2,7 +2,7 @@ import pandas as pd
 import numpy as np
 import json
 import sys
-from xgboost import XGBRegressor
+from sklearn.ensemble import RandomForestRegressor
 from sklearn.model_selection import train_test_split, cross_val_score
 from sklearn.metrics import r2_score, mean_absolute_error, mean_squared_error
 from sklearn.preprocessing import StandardScaler
@@ -79,15 +79,15 @@ def process_student_data(csv_path):
         # Train/test split
         X_train, X_test, y_train, y_test = train_test_split(X_scaled, y, test_size=0.2, random_state=42)
 
-        # Simple XGBoost model (no hyperparameter tuning to avoid serialization issues)
-        xgb = XGBRegressor(
-            n_estimators=100,
-            max_depth=6,
-            learning_rate=0.1,
-            random_state=42
+        # Simple Random Forest model (robust for serverless)
+        rf = RandomForestRegressor(
+            n_estimators=300,
+            max_depth=10,
+            random_state=42,
+            n_jobs=1
         )
-        xgb.fit(X_train, y_train)
-        y_pred = xgb.predict(X_test)
+        rf.fit(X_train, y_train)
+        y_pred = rf.predict(X_test)
 
         # Metrics
         r2 = r2_score(y_test, y_pred)
@@ -96,15 +96,15 @@ def process_student_data(csv_path):
         rmse = np.sqrt(mse)
 
         # Simple cross-validation
-        cv_scores = cross_val_score(xgb, X_scaled, y, cv=3, scoring='r2')
+        cv_scores = cross_val_score(rf, X_scaled, y, cv=3, scoring='r2')
 
         # Feature importance
-        importances = xgb.feature_importances_
+        importances = rf.feature_importances_
         feature_importance_df = pd.DataFrame({'feature': features, 'importance': importances})
         feature_importance_df = feature_importance_df.sort_values('importance', ascending=False)
 
         # Generate predictions for all data
-        y_all_pred = xgb.predict(X_scaled)
+        y_all_pred = rf.predict(X_scaled)
         
         # Create results dataframe with predictions
         results_df = df.copy()
@@ -146,9 +146,8 @@ def process_student_data(csv_path):
                 'cv_r2_std': float(cv_scores.std())
             },
             'best_params': {
-                'n_estimators': 100,
-                'max_depth': 6,
-                'learning_rate': 0.1
+                'n_estimators': 300,
+                'max_depth': 10
             },
             'feature_importance': feature_importance_data,
             'predicted_vs_actual': predicted_vs_actual,

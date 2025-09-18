@@ -2,8 +2,8 @@ import pandas as pd
 import numpy as np
 import json
 import sys
-from xgboost import XGBRegressor
-from sklearn.model_selection import train_test_split, KFold, cross_val_score, RandomizedSearchCV
+from sklearn.ensemble import RandomForestRegressor
+from sklearn.model_selection import train_test_split, KFold, cross_val_score
 from sklearn.metrics import r2_score, mean_absolute_error, mean_squared_error
 from sklearn.preprocessing import StandardScaler
 import warnings
@@ -79,26 +79,15 @@ def process_student_data(csv_path):
         # Train/test split
         X_train, X_test, y_train, y_test = train_test_split(X_scaled, y, test_size=0.2, random_state=42)
 
-        # XGBoost hyperparameter search space
-        param_dist = {
-            'n_estimators': [300, 500, 750, 1000],
-            'max_depth': [3, 5, 7, 9],
-            'learning_rate': [0.01, 0.05, 0.1, 0.2],
-            'subsample': [0.7, 0.8, 0.9, 1.0],
-            'colsample_bytree': [0.7, 0.8, 0.9, 1.0],
-            'reg_alpha': [0, 0.2, 0.5, 1],
-            'reg_lambda': [0.5, 1, 2, 5]
-        }
-
-        xgb = XGBRegressor(random_state=42)
-        rsearch = RandomizedSearchCV(xgb, param_distributions=param_dist, 
-                                    n_iter=10, scoring='r2',
-                                    n_jobs=1, cv=3, random_state=42, verbose=0)
-        rsearch.fit(X_train, y_train)
-
-        best_xgb = rsearch.best_estimator_
-        best_xgb.fit(X_train, y_train)
-        y_pred = best_xgb.predict(X_test)
+        # Random Forest model (simple, robust)
+        rf = RandomForestRegressor(
+            n_estimators=300,
+            max_depth=10,
+            random_state=42,
+            n_jobs=1
+        )
+        rf.fit(X_train, y_train)
+        y_pred = rf.predict(X_test)
 
         # Metrics
         r2 = r2_score(y_test, y_pred)
@@ -108,15 +97,15 @@ def process_student_data(csv_path):
 
         # 3-fold cross-validation for robust estimate
         cv = KFold(n_splits=3, shuffle=True, random_state=42)
-        r2_cv_scores = cross_val_score(best_xgb, X_scaled, y, cv=cv, scoring='r2', n_jobs=1)
+        r2_cv_scores = cross_val_score(rf, X_scaled, y, cv=cv, scoring='r2', n_jobs=1)
 
         # Feature importance
-        importances = best_xgb.feature_importances_
+        importances = rf.feature_importances_
         feature_importance_df = pd.DataFrame({'feature': features, 'importance': importances})
         feature_importance_df = feature_importance_df.sort_values('importance', ascending=False)
 
         # Generate predictions for all data
-        y_all_pred = best_xgb.predict(X_scaled)
+        y_all_pred = rf.predict(X_scaled)
         
         # Create results dataframe with predictions
         results_df = df.copy()
@@ -157,7 +146,10 @@ def process_student_data(csv_path):
                 'cv_r2_mean': float(r2_cv_scores.mean()),
                 'cv_r2_std': float(r2_cv_scores.std())
             },
-            'best_params': rsearch.best_params_,
+            'best_params': {
+                'n_estimators': 300,
+                'max_depth': 10
+            },
             'feature_importance': feature_importance_data,
             'predicted_vs_actual': predicted_vs_actual,
             'dataset_overview': dataset_overview,
