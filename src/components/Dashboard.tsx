@@ -9,7 +9,7 @@ import MetricsCards from './MetricsCards';
 import FeatureImportanceChart from './FeatureImportanceChart';
 import PredictedVsActualChart from './PredictedVsActualChart';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
 
 interface MLResults {
@@ -22,7 +22,7 @@ interface MLResults {
     cv_r2_mean: number;
     cv_r2_std: number;
   };
-  best_params: any;
+  best_params: Record<string, unknown>;
   feature_importance: Array<{
     feature: string;
     importance: number;
@@ -34,7 +34,7 @@ interface MLResults {
   dataset_overview: {
     total_rows: number;
     total_columns: number;
-    sample_data: any[];
+    sample_data: Record<string, unknown>[];
     column_names: string[];
   };
   predictions_csv: string;

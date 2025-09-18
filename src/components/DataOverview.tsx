@@ -9,7 +9,7 @@ interface DataOverviewProps {
   overview: {
     total_rows: number;
     total_columns: number;
-    sample_data: any[];
+    sample_data: Record<string, unknown>[];
     column_names: string[];
   };
 }
@@ -170,7 +170,7 @@ export default function DataOverview({ overview }: DataOverviewProps) {
                             key={colIndex}
                             className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-100 font-medium"
                           >
-                            {row[column]}
+                            {String(row[column] ?? '')}
                           </td>
                         ))}
                       </motion.tr>
