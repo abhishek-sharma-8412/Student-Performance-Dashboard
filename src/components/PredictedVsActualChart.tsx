@@ -68,7 +68,7 @@ export default function PredictedVsActualChart({ data }: PredictedVsActualChartP
                   y={minVal} 
                   stroke="#ef4444" 
                   strokeDasharray="5 5"
-                  label={{ value: "Perfect Prediction", position: "topRight" }}
+                  label={{ value: "Perfect Prediction", position: "top" }}
                 />
                 <ReferenceLine 
                   y={maxVal} 
