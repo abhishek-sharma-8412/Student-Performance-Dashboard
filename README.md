@@ -4,6 +4,28 @@
 
 For the latest deployed version, visit the link above. This is the production deployment on Vercel.
 
+## Screenshots
+
+<div align="center">
+  <img src="screenshots/Screenshot 2025-09-19 193047.png" alt="Dashboard Overview" width="800"/>
+  <p><em>Dashboard Overview</em></p>
+</div>
+
+<div align="center">
+  <img src="screenshots/Screenshot 2025-09-19 193056.png" alt="File Upload Interface" width="800"/>
+  <p><em>File Upload Interface</em></p>
+</div>
+
+<div align="center">
+  <img src="screenshots/Screenshot 2025-09-19 193105.png" alt="ML Results Display" width="800"/>
+  <p><em>ML Results Display</em></p>
+</div>
+
+<div align="center">
+  <img src="screenshots/Screenshot 2025-09-19 193112.png" alt="Feature Importance Chart" width="800"/>
+  <p><em>Feature Importance Chart</em></p>
+</div>
+
 An extraordinary Next.js application with a modern UI/UX dashboard for predicting student assessment scores using Machine Learning.
 
 ## Features
